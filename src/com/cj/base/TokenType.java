@@ -11,7 +11,7 @@ public enum TokenType {
     BOOLEAN(128,"boolean"),//boolean:true/false
     SEP_COLON(256,":"),    //:
     SEP_COMMA(512,","),    //,
-    END_DOCUMENT(1024,";");//;
+    END_DOCUMENT(1024,";");//; end of file
 
     private int code;
     private String symbol;
