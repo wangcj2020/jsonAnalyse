@@ -1,7 +1,5 @@
 package com.cj.base;
 
-import jdk.nashorn.internal.parser.JSONParser;
-
 import java.io.IOException;
 import java.io.Reader;
 
@@ -18,6 +16,31 @@ public class CharReader {
         this.reader = reader;
         buffer = new char[BUFFER_SIZE];
     }
+
+    public int getHas_read() {
+        return has_read;
+    }
+
+    public void setHas_read(int has_read) {
+        this.has_read = has_read;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
 
     private void fillBuffer() throws IOException {
         int n = this.reader.read(buffer);

@@ -3,7 +3,11 @@ package com.cj.base;
 public class Token {
     private TokenType tokenType;//Token的类型
     private String value;       //Token的字面量
-    
+
+    public Token(TokenType tokenType,String value){
+        this.tokenType = tokenType;
+        this.value = value;
+    }
     public TokenType getTokenType() {
         return tokenType;
     }
