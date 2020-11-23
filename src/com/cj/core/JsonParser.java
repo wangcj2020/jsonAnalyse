@@ -107,6 +107,58 @@ public class JsonParser {
 
     private JsonArray parseJsonArray(){
         JsonArray jsonArray = new JsonArray();
+        //调用该函数时必然是遇到了'[',因此期待一个元素值(类型可以是字符串、数字、json对象、json数组)
+        int exceptTokeTypeCode = TokenType.STRING.getCode() | TokenType.NUMBER.getCode()
+                | TokenType.BEGIN_OBJECT.getCode() | TokenType.BEGIN_ARRAY.getCode() | TokenType.END_ARRAY.getCode();
+
+        String key = null;
+        Object value = null;
+
+        while(tokenList.hasMore()){
+            // 1、读取一个Token
+            Token token = tokenList.next_token();
+            TokenType tokenType = token.getTokenType();
+            String tokenValue = token.getValue();
+            // 2、判断该Token是否是期望的Token,若是更改exceptTokeTypeCode，否则抛出异常，直至最终遇到']'后返回该JsonArray
+            /*
+            {：期待一个key值，必须为字符串或‘}‘；递归解析JsonObject
+            }：完成解析返回jsonObject
+            [：期待一个Array元素值，或’]‘
+            ]：期待一个分隔符‘,’
+            ,：期待一个key值，必须为字符串
+            number：只能为value值，因此期待一个分隔符',
+            string：可以是key值，此时期待一个分隔符‘:’;也可以是value值，此时期待一个分隔符‘,’
+                    此处需要先判断该string是key还是value
+            */
+            checkExceptToken(tokenType, exceptTokeTypeCode);
+            switch (tokenType){
+                case BEGIN_OBJECT: //key(字符串)、'}'
+                    jsonArray.add(parseJsonObject());  //递归解析Json对象
+                    exceptTokeTypeCode  = TokenType.STRING.getCode() | TokenType.END_OBJECT.getCode();
+                    break;
+                case END_OBJECT:
+                case NUMBER:
+                case STRING:
+                    exceptTokeTypeCode = TokenType.SEP_COMMA.getCode() | TokenType.END_ARRAY.getCode();
+                    break;
+                case BEGIN_ARRAY: //value(字符串)、']'
+                    jsonArray.add(parseJsonArray()); //递归解析Array
+                    exceptTokeTypeCode = TokenType.STRING.getCode() | TokenType.NUMBER.getCode()
+                            | TokenType.BEGIN_OBJECT.getCode() | TokenType.BEGIN_ARRAY.getCode() | TokenType.END_ARRAY.getCode();
+                    break;
+                case END_ARRAY: // 返回JsonArray对象
+                    return jsonArray;
+                case SEP_COMMA: //
+                    exceptTokeTypeCode = TokenType.STRING.getCode() | TokenType.NUMBER.getCode()
+                            | TokenType.BEGIN_OBJECT.getCode() | TokenType.BEGIN_ARRAY.getCode() | TokenType.END_ARRAY.getCode();
+                    break;
+                case END_DOCUMENT:
+                    System.out.println("已解析到文件末尾!");
+                    break;
+                default:
+                    throw new JsonParseException("无效的Token");
+            }
+        }
         throw new JsonParseException("解析错误，无效的Token");
     }
 
