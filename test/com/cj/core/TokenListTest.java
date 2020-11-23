@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.io.*;
 
 public class TokenListTest {
-    String file_path = System.getProperty("user.dir") + "\\test\\com\\cj\\core\\json";
+    String file_path = System.getProperty("user.dir") + "\\test\\com\\cj\\core\\json.txt";
     Reader fileReader = getReader(file_path);
 
     private Reader getReader(String file_path){
@@ -40,7 +40,7 @@ public class TokenListTest {
     @Test
     /**
      * 输出结果
-     * Token{tokenType=TokenType{code=1, symbol='{'}, value='{'}
+     *Token{tokenType=TokenType{code=1, symbol='{'}, value='{'}
      * Token{tokenType=TokenType{code=64, symbol='string'}, value='name'}
      * Token{tokenType=TokenType{code=256, symbol=':'}, value=':'}
      * Token{tokenType=TokenType{code=64, symbol='string'}, value='wang'}
@@ -62,9 +62,16 @@ public class TokenListTest {
      * Token{tokenType=TokenType{code=512, symbol=','}, value=','}
      * Token{tokenType=TokenType{code=64, symbol='string'}, value='music'}
      * Token{tokenType=TokenType{code=8, symbol=']'}, value=']'}
+     * Token{tokenType=TokenType{code=512, symbol=','}, value=','}
+     * Token{tokenType=TokenType{code=64, symbol='string'}, value='birthday'}
+     * Token{tokenType=TokenType{code=256, symbol=':'}, value=':'}
+     * Token{tokenType=TokenType{code=64, symbol='string'}, value='1996-11-25'}
+     * Token{tokenType=TokenType{code=512, symbol=','}, value=','}
+     * Token{tokenType=TokenType{code=64, symbol='string'}, value='bool'}
+     * Token{tokenType=TokenType{code=256, symbol=':'}, value=':'}
+     * Token{tokenType=TokenType{code=128, symbol='boolean'}, value='true'}
      * Token{tokenType=TokenType{code=2, symbol='}'}, value='}'}
      * Token{tokenType=TokenType{code=1024, symbol=';'}, value='null'}
-     *
      * Process finished with exit code 0
      */
     public void test_tokenizer() throws IOException {

@@ -70,7 +70,7 @@ public class Tokenizer {
         if(isDigit(ch)){
             return readNumber(false,ch);
         }
-        throw new JsonParseException("非法字符");
+        throw new JsonParseException("非法字符" + ch, this.charReader.getHas_read());
     }
 
     /**
